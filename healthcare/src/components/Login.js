@@ -1,30 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../services/authService"; // Import the login service
 import "./../styles/Login.css";
 
 const Login = ({ userType }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`${userType} Login details:`, { email, password });
+    try {
+      // Call the login service
+      const response = await login({ email, password, userType });
 
-    // Simulate a login check
-    if (userType === "Doctor" && email === "doctor@example.com" && password === "password") {
-      localStorage.setItem("doctorLoggedIn", "true"); // Set login flag
-      navigate("/doctor/profile");
-    } else if (userType === "Patient" && email === "patient@example.com" && password === "password") {
-      navigate("/patient/profile");
-    } else {
-      alert("Invalid login credentials");
+      if (response.message === "Login successful") {
+        // Store the user type locally and redirect based on it
+        localStorage.setItem("userType", userType);
+
+        if (userType === "Doctor") {
+          navigate("/doctor/profile");
+        } else if (userType === "Patient") {
+          navigate("/patient/profile");
+        }
+      } else {
+        setError("Invalid login credentials.");
+      }
+    } catch (err) {
+      setError(err.message || "An error occurred during login.");
     }
   };
 
   return (
     <div className="login-container">
       <h2>{userType} Login</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>
@@ -33,6 +44,7 @@ const Login = ({ userType }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Enter your email"
           />
         </div>
         <div>
@@ -42,10 +54,20 @@ const Login = ({ userType }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Enter your password"
           />
         </div>
         <button type="submit">Login</button>
       </form>
+
+      <div className="signup">
+        <p>
+          New user?{" "}
+          <a href={userType === "Patient" ? "/patient/signup" : "/doctor/signup"}>
+            Sign Up
+          </a>
+        </p>
+      </div>
     </div>
   );
 };
