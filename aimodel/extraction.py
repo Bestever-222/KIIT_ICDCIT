@@ -1,17 +1,14 @@
 import pdfplumber
-from groq import Groq
 import re
 from pytesseract import image_to_string
 from PIL import Image
 import PyPDF2
 import pdfplumber
 import pandas as pd
-
+import json
+from ApiKey import get_groq_response
 
 pdf_path = r"aimodel\blood_test_report.pdf"
-# Initialize the Groq client with your API key
-api_key = "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"  # Replace with your actual API key
-client = Groq(api_key=api_key)
 
 def extract_text_from_pdf(pdf_path):
     """
@@ -43,14 +40,8 @@ Medical Report Text:
 Report Type (choose one):
 """
     try:
-        # Make the API call to Groq
-        response = client.chat.completions.create(
-            messages=[{"role": "user", "content": prompt}],
-            model="llama-3.2-90b-vision-preview", 
-            temperature=0.5,
-            max_tokens=100,
-        )
-        return response.choices[0].message.content.strip()
+        response = get_groq_response(prompt)
+        return response.strip()
     except Exception as e:
         return f"Error: {e}"
 
@@ -105,15 +96,43 @@ FIELD_PATTERNS = {
     "Ferritin": r"Ferritin[:\-]?\s*(\d+\.?\d*)",
     "TSH (Thyroid-Stimulating Hormone)": r"TSH[:\-]?\s*(\d+\.?\d*)"
 },
-    "MRI Scan": {
-        "Impression": r"Impression[:\-]?\s*(.*)",
-        "Findings": r"Findings[:\-]?\s*(.*)"
-    },
+    "Biopsy": {
+    "Tissue Source": r"Tissue Source[:\-]?\s*(.*)",
+    "Clinical Diagnosis": r"Clinical Diagnosis[:\-]?\s*(.*)",
+    "Pathological Diagnosis": r"Pathological Diagnosis[:\-]?\s*(.*)",
+    "Histological Findings": r"Histological Findings[:\-]?\s*(.*)",
+    "Immunohistochemistry Markers": r"Immunohistochemistry Markers[:\-]?\s*(.*)",
+    "Grade of Tumor": r"Grade[:\-]?\s*(.*)",
+    "Stage of Tumor": r"Stage[:\-]?\s*(.*)",
+    "Margins": r"Margins[:\-]?\s*(.*)",
+    "Lymphovascular Invasion": r"Lymphovascular Invasion[:\-]?\s*(.*)",
+    "Perineural Invasion": r"Perineural Invasion[:\-]?\s*(.*)",
+    "Mitotic Count": r"Mitotic Count[:\-]?\s*(.*)",
+    "Comments": r"Comments[:\-]?\s*(.*)"
+},
+
     "Urinalysis": {
-        "pH": r"pH[:\-]?\s*(\d+\.?\d*)",
-        "Protein": r"Protein[:\-]?\s*(\w+)"
-    },
-    # Add more report types and fields here
+    "Color": r"Color[:\-]?\s*(.*)",
+    "Appearance": r"Appearance[:\-]?\s*(.*)",
+    "Specific Gravity": r"Specific Gravity[:\-]?\s*(\d+\.?\d*)",
+    "pH": r"pH[:\-]?\s*(\d+\.?\d*)",
+    "Protein": r"Protein[:\-]?\s*(.*)",
+    "Glucose": r"Glucose[:\-]?\s*(.*)",
+    "Ketones": r"Ketones[:\-]?\s*(.*)",
+    "Bilirubin": r"Bilirubin[:\-]?\s*(.*)",
+    "Urobilinogen": r"Urobilinogen[:\-]?\s*(.*)",
+    "Blood": r"Blood[:\-]?\s*(.*)",
+    "Nitrite": r"Nitrite[:\-]?\s*(.*)",
+    "Leukocytes": r"Leukocytes[:\-]?\s*(.*)",
+    "RBC Count": r"RBC Count[:\-]?\s*(\d+\.?\d*)",
+    "WBC Count": r"WBC Count[:\-]?\s*(\d+\.?\d*)",
+    "Epithelial Cells": r"Epithelial Cells[:\-]?\s*(.*)",
+    "Casts": r"Casts[:\-]?\s*(.*)",
+    "Crystals": r"Crystals[:\-]?\s*(.*)",
+    "Bacteria": r"Bacteria[:\-]?\s*(.*)",
+    "Yeast": r"Yeast[:\-]?\s*(.*)",
+    "Comments": r"Comments[:\-]?\s*(.*)"
+},
 }
 
 
@@ -162,7 +181,20 @@ def process_report(file_path, file_type, type):
         print("No text extracted!")
         return None
 
-# Example Usage
+def save_extracted_fields_to_json(fields, output_path="aimodel\extracted_fields.json"):
+    """
+    Save the extracted fields into a JSON file.
+    """
+    with open(output_path, "w") as json_file:
+        json.dump(fields, json_file, indent=4)
+    print(f"Fields saved to {output_path}")
+
+
 if __name__ == "__main__":
-    
-    process_report(path, "pdf", type)
+    pdf_path = "aimodel\\blood_test_report.pdf"
+    report_type = "Blood Report"  # Example, dynamically set this in your workflow
+    text = extract_text_from_pdf(pdf_path)
+    fields = extract_fields(report_type, text)
+
+    # Save fields to a JSON file
+    save_extracted_fields_to_json(fields)

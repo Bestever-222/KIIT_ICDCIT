@@ -1,0 +1,31 @@
+{
+    "ConditionIdentified": {
+        "FeatureName": "No risks detected",
+        "Indicators": [
+            "Hemoglobin: 14.5",
+            "Hematocrit (HCT): 43.3",
+            "MCV (Mean Corpuscular Volume): 90.3",
+            "MCH (Mean Corpuscular Hemoglobin): 30.2",
+            "MCHC (Mean Corpuscular Hemoglobin Concentration): 33.4",
+            "ESR (Erythrocyte Sedimentation Rate): 7",
+            "Albumin: 4.20",
+            "SGPT (ALT): 48.0",
+            "SGOT (AST): 27.0",
+            "Vitamin D: 8.98",
+            "Iron: 103.00"
+        ]
+    },
+    "RecommendedTests": {
+        "Tests": []
+    },
+    "PreventiveMeasures": {
+        "Measures": [
+            "Maintain a balanced diet rich in fruits, vegetables, and whole grains.",
+            "Stay hydrated by drinking plenty of water.",
+            "Exercise regularly, such as brisk walking, cycling, or swimming, for at least 30 minutes a day.",
+            "Get enough sleep, aiming for 7-8 hours per night.",
+            "Avoid smoking and limit alcohol consumption.",
+            "Manage stress through relaxation techniques like meditation or deep breathing."
+        ]
+    }
+}
