@@ -52,7 +52,7 @@ def main():
     report_type = identify_report_type_with_groq(text)
     return str(report_type)
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     report_type = main()
     print(report_type)
 
@@ -133,7 +133,6 @@ FIELD_PATTERNS = {
     "Yeast": r"Yeast[:\-]?\s*(.*)",
     "Comments": r"Comments[:\-]?\s*(.*)"
 },
-    
 }
 
 
@@ -191,7 +190,7 @@ def save_extracted_fields_to_json(fields, output_path="aimodel\extracted_fields.
     print(f"Fields saved to {output_path}")
 
 
-if __name__ == "__main__":
+if __name__ == "_main_":
     pdf_path = "aimodel\\blood_test_report.pdf"
     report_type = "Blood Report"  # Example, dynamically set this in your workflow
     text = extract_text_from_pdf(pdf_path)
