@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import "./../styles/PatientProfile.css";
 
 const PatientProfile = () => {
-  // State for biodata
   const [biodata, setBiodata] = useState({
     userId: uuidv4(),
     name: "",
@@ -16,20 +15,15 @@ const PatientProfile = () => {
     email: "",
   });
 
-  // State for medical reports
   const [medicalReports, setMedicalReports] = useState([]);
-
-  // State for medications
   const [medications, setMedications] = useState([]);
-
-  // State for last consulted doctor
   const [lastDoctor, setLastDoctor] = useState({
     name: "Dr. Smith",
     contact: "123-456-7890",
   });
 
-  // State for AI diagnostics
   const [aiDiagnostics, setAiDiagnostics] = useState([]);
+  const [activeSection, setActiveSection] = useState("biodata");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -39,12 +33,14 @@ const PatientProfile = () => {
   const handleReportUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const newReport = {
-        id: uuidv4(),
-        name: file.name,
-        date: new Date().toLocaleDateString(),
-      };
-      setMedicalReports((prev) => [...prev, newReport]);
+      setMedicalReports((prev) => [
+        ...prev,
+        {
+          id: uuidv4(),
+          name: file.name,
+          date: new Date().toLocaleDateString(),
+        },
+      ]);
     }
   };
 
@@ -55,8 +51,11 @@ const PatientProfile = () => {
     setMedications(updatedMedications);
   };
 
+  const addMedication = () => {
+    setMedications((prev) => [...prev, { name: "" }]);
+  };
+
   const analyzeReports = () => {
-    // Placeholder for AI logic
     const diagnostics = [
       "No anomalies detected in the last report.",
       "Slight irregularity in blood pressure levels.",
@@ -66,100 +65,109 @@ const PatientProfile = () => {
 
   return (
     <div className="patient-profile">
-      <h2>Patient Profile</h2>
-
       {/* Unique User ID */}
-      <div className="section">
-        <h3>Unique User ID</h3>
-        <p>{biodata.userId}</p>
+      <div className="unique-user-id">
+        <p>User ID: {biodata.userId}</p>
       </div>
 
-      {/* Bio Data */}
-      <div className="section">
-        <h3>Bio Data</h3>
-        <form>
-          {Object.keys(biodata).map(
-            (key) =>
-              key !== "userId" && (
-                <div key={key}>
-                  <label>{key.replace(/([A-Z])/g, " $1")}:</label>
-                  <input
-                    type="text"
-                    name={key}
-                    value={biodata[key]}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              )
-          )}
-        </form>
-      </div>
-
-      {/* Medical Reports Section */}
-      <div className="section">
-        <h3>Medical Reports</h3>
-        <input type="file" onChange={handleReportUpload} />
+      {/* Navigation Bar */}
+      <nav className="navbar">
         <ul>
-          {medicalReports.map((report) => (
-            <li key={report.id}>
-              {report.name} (Uploaded on: {report.date})
-              <button onClick={() => alert(`Viewing: ${report.name}`)}>
-                View
-              </button>
-              <button onClick={() => alert(`Downloading: ${report.name}`)}>
-                Download
-              </button>
+          {["biodata", "medicalReports", "medications", "lastDoctor", "aiDiagnostics"].map((section) => (
+            <li
+              key={section}
+              className={activeSection === section ? "active" : ""}
+              onClick={() => setActiveSection(section)}
+            >
+              {section.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
 
-      {/* Medication Section */}
-      <div className="section">
-        <h3>Medications</h3>
-        {medications.length === 0 && (
-          <button onClick={() => setMedications([{ name: "", dosage: "" }])}>
-            Add Medication
-          </button>
-        )}
-        {medications.map((med, index) => (
-          <div key={index} className="medication">
-            <input
-              type="text"
-              placeholder="Medication Name"
-              value={med.name}
-              onChange={(e) =>
-                handleMedicationUpdate(index, "name", e.target.value)
-              }
-            />
-            <input
-              type="text"
-              placeholder="Dosage"
-              value={med.dosage}
-              onChange={(e) =>
-                handleMedicationUpdate(index, "dosage", e.target.value)
-              }
-            />
+      {/* Content */}
+      <div className="content">
+        {activeSection === "biodata" && (
+          <div className="section">
+            <h3>Bio Data</h3>
+            <form>
+              {Object.keys(biodata).map(
+                (key) =>
+                  key !== "userId" && (
+                    <div key={key} className="form-group">
+                      <label>{key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}</label>
+                      <input
+                        type="text"
+                        name={key}
+                        value={biodata[key]}
+                        onChange={handleInputChange}
+                        placeholder={`Enter ${key}`}
+                      />
+                    </div>
+                  )
+              )}
+            </form>
           </div>
-        ))}
-      </div>
-
-      {/* Last Consulted Doctor */}
-      <div className="section">
-        <h3>Last Consulted Doctor</h3>
-        <p>Name: {lastDoctor.name}</p>
-        <p>Contact: {lastDoctor.contact}</p>
-      </div>
-
-      {/* AI Diagnostics */}
-      <div className="section">
-        <h3>AI Diagnostics</h3>
-        <button onClick={analyzeReports}>Analyze Reports</button>
-        <ul>
-          {aiDiagnostics.map((diag, index) => (
-            <li key={index}>{diag}</li>
-          ))}
-        </ul>
+        )}
+        {activeSection === "medicalReports" && (
+          <div className="section">
+            <h3>Medical Reports</h3>
+            <input type="file" onChange={handleReportUpload} />
+            {medicalReports.length ? (
+              <ul>
+                {medicalReports.map((report) => (
+                  <li key={report.id}>
+                    {report.name} (Uploaded on: {report.date})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No reports uploaded yet.</p>
+            )}
+          </div>
+        )}
+        {activeSection === "medications" && (
+          <div className="section">
+            <h3>Medications</h3>
+            {medications.length > 0 ? (
+              medications.map((med, index) => (
+                <div key={index} className="medication-item">
+                  <input
+                    type="text"
+                    placeholder="Medication Name"
+                    value={med.name}
+                    onChange={(e) => handleMedicationUpdate(index, "name", e.target.value)}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>No medications added yet.</p>
+            )}
+            <button onClick={addMedication}>Add Medication</button>
+          </div>
+        )}
+        {activeSection === "lastDoctor" && (
+          <div className="section">
+            <h3>Last Consulted Doctor</h3>
+            <p>Name: {lastDoctor.name}</p>
+            <p>Contact: {lastDoctor.contact}</p>
+          </div>
+        )}
+        {activeSection === "aiDiagnostics" && (
+          <div className="section">
+            <h3>AI Diagnostics</h3>
+            <button onClick={analyzeReports}>Analyze</button>
+            {aiDiagnostics.length > 0 ? (
+              <ul>
+                {aiDiagnostics.map((diag, index) => (
+                  <li key={index}>{diag}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No diagnostics available yet.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

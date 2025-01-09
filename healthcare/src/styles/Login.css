@@ -1,14 +1,154 @@
+/* General Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  margin: 0;
+  padding: 0;
+  background-image: url('https://img.freepik.com/free-photo/copy-space-phone-desk_23-2148519756.jpg?t=st=1736403507~exp=1736407107~hmac=f20b3c15399ad6821177700d52ee8f6fcc282e84edb5f2d7a5a22adce3ff32f6&w=996');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .login-container {
-    margin: 50px auto;
-    max-width: 400px;
-    text-align: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: white;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  color: #333;
+  font-size: 26px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container input {
+  margin: 10px 0;
+  padding: 14px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.login-container input:hover {
+  background-color: #f1f1f1;
+}
+
+.login-container input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  background-color: #fff;
+}
+
+button {
+  margin-top: 20px;
+  padding: 14px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+button:active {
+  background-color: #004494;
+  transform: translateY(1px);
+}
+
+.forgot-password {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #007bff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.signup-container {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.signup-container a {
+  color: #007bff;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.signup-container a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Animation for Form Inputs */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  .login-container form {
-    display: flex;
-    flex-direction: column;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+
+.login-container {
+  animation: fadeIn 0.8s ease;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 480px) {
+  .login-container {
+    margin: 20px;
+    padding: 20px;
+    width: 90%;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 12px;
+  }
+
   .login-container input {
-    margin: 10px 0;
-    padding: 8px;
+    padding: 12px;
   }
-  
+}

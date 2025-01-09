@@ -14,7 +14,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/patient/login" element={<Login userType="Patient" />} />
-        <Route path="/patient/signup" element={<Signup userType="Patient" />} />
+        <Route path="/patient/signup" element={<Signup userType="" />} />
         <Route path="/patient/profile" element={<PatientProfile />} />
         <Route path="/doctor/login" element={<Login userType="Doctor" />} />
         <Route path="/doctor/profile" element={isAuthenticated ? <DoctorProfile /> : <Navigate to="/doctor/login" />} />
