@@ -105,15 +105,44 @@ FIELD_PATTERNS = {
     "Ferritin": r"Ferritin[:\-]?\s*(\d+\.?\d*)",
     "TSH (Thyroid-Stimulating Hormone)": r"TSH[:\-]?\s*(\d+\.?\d*)"
 },
-    "MRI Scan": {
-        "Impression": r"Impression[:\-]?\s*(.*)",
-        "Findings": r"Findings[:\-]?\s*(.*)"
-    },
+    "Biopsy": {
+    "Tissue Source": r"Tissue Source[:\-]?\s*(.*)",
+    "Clinical Diagnosis": r"Clinical Diagnosis[:\-]?\s*(.*)",
+    "Pathological Diagnosis": r"Pathological Diagnosis[:\-]?\s*(.*)",
+    "Histological Findings": r"Histological Findings[:\-]?\s*(.*)",
+    "Immunohistochemistry Markers": r"Immunohistochemistry Markers[:\-]?\s*(.*)",
+    "Grade of Tumor": r"Grade[:\-]?\s*(.*)",
+    "Stage of Tumor": r"Stage[:\-]?\s*(.*)",
+    "Margins": r"Margins[:\-]?\s*(.*)",
+    "Lymphovascular Invasion": r"Lymphovascular Invasion[:\-]?\s*(.*)",
+    "Perineural Invasion": r"Perineural Invasion[:\-]?\s*(.*)",
+    "Mitotic Count": r"Mitotic Count[:\-]?\s*(.*)",
+    "Comments": r"Comments[:\-]?\s*(.*)"
+},
+
     "Urinalysis": {
-        "pH": r"pH[:\-]?\s*(\d+\.?\d*)",
-        "Protein": r"Protein[:\-]?\s*(\w+)"
-    },
-    # Add more report types and fields here
+    "Color": r"Color[:\-]?\s*(.*)",
+    "Appearance": r"Appearance[:\-]?\s*(.*)",
+    "Specific Gravity": r"Specific Gravity[:\-]?\s*(\d+\.?\d*)",
+    "pH": r"pH[:\-]?\s*(\d+\.?\d*)",
+    "Protein": r"Protein[:\-]?\s*(.*)",
+    "Glucose": r"Glucose[:\-]?\s*(.*)",
+    "Ketones": r"Ketones[:\-]?\s*(.*)",
+    "Bilirubin": r"Bilirubin[:\-]?\s*(.*)",
+    "Urobilinogen": r"Urobilinogen[:\-]?\s*(.*)",
+    "Blood": r"Blood[:\-]?\s*(.*)",
+    "Nitrite": r"Nitrite[:\-]?\s*(.*)",
+    "Leukocytes": r"Leukocytes[:\-]?\s*(.*)",
+    "RBC Count": r"RBC Count[:\-]?\s*(\d+\.?\d*)",
+    "WBC Count": r"WBC Count[:\-]?\s*(\d+\.?\d*)",
+    "Epithelial Cells": r"Epithelial Cells[:\-]?\s*(.*)",
+    "Casts": r"Casts[:\-]?\s*(.*)",
+    "Crystals": r"Crystals[:\-]?\s*(.*)",
+    "Bacteria": r"Bacteria[:\-]?\s*(.*)",
+    "Yeast": r"Yeast[:\-]?\s*(.*)",
+    "Comments": r"Comments[:\-]?\s*(.*)"
+},
+    
 }
 
 
